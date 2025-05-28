@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Masonry Layout</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            text-align: center;
+            color: #333;
+        }
+
+        /* Container for the entire masonry layout */
+        .masonry-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* Row styles */
+        .masonry-row {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+
+        /* Video item styles */
+        .masonry-item {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            /* Show pointer cursor to indicate clickable */
+        }
+
+        .masonry-item video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* Play icon for better UX */
+        .masonry-item::before {
+            content: "▶";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 48px;
+            color: rgba(255, 255, 255, 0.8);
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            z-index: 15;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+
+        .masonry-item:hover::before {
+            opacity: 1;
+        }
+
+        /* Hide play icon when video is playing */
+        .masonry-item.playing::before {
+            display: none;
+        }
+
+        /* Auto-hide video controls when not in use */
+        .masonry-item video::-webkit-media-controls-panel {
+            opacity: 0 !important;
+            /* Hide controls by default */
+            transition: opacity 0.3s ease;
+            background: transparent !important;
+            /* Remove control bar background */
+            background-color: transparent !important;
+        }
+
+        .masonry-item:hover video::-webkit-media-controls-panel {
+            opacity: 1 !important;
+            /* Show controls on hover */
+        }
+
+        /* Make the control bar elements more visible without the background */
+        video::-webkit-media-controls-play-button,
+        video::-webkit-media-controls-mute-button,
+        video::-webkit-media-controls-volume-slider,
+        video::-webkit-media-controls-current-time-display,
+        video::-webkit-media-controls-time-remaining-display,
+        video::-webkit-media-controls-fullscreen-button,
+        video::-webkit-media-controls-toggle-closed-captions-button {
+            color: white !important;
+            text-shadow: 0 0 2px rgba(0, 0, 0, 0.8) !important;
+        }
+
+        /* Style active videos */
+        .masonry-item.playing video::-webkit-media-controls-panel {
+            opacity: 0 !important;
+            /* Hide controls by default for playing videos too */
+            background: transparent !important;
+        }
+
+        .masonry-item.playing:hover video::-webkit-media-controls-panel {
+            opacity: 1 !important;
+            /* Show controls when hovering over playing videos */
+        }
+
+        /* Ensure volume button is clearly visible when controls are shown */
+        video::-webkit-media-controls-mute-button {
+            visibility: visible !important;
+        }
+
+        /* Minimize video control elements */
+        video::-webkit-media-controls-enclosure {
+            padding: 0;
+            margin: 0;
+        }
+
+        /* Firefox specific styles */
+        @-moz-document url-prefix() {
+            .masonry-item video {
+                z-index: 1;
+            }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 992px) {
+            .masonry-row {
+                gap: 15px;
+            }
+
+            .row-2 {
+                flex-wrap: wrap;
+            }
+
+            .row-2 .masonry-item {
+                width: calc(50% - 8px) !important;
+                margin-bottom: 15px;
+            }
+
+            .row-3 {
+                padding: 0 10% !important;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .masonry-row {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .row-1 .masonry-item,
+            .row-2 .masonry-item,
+            .row-3 .masonry-item {
+                width: 100% !important;
+                height: auto !important;
+            }
+
+            .row-1 .masonry-item,
+            .row-3 .masonry-item {
+                padding-top: 66.67% !important;
+                /* 2:3 for landscape */
+            }
+
+            .row-2 .masonry-item {
+                padding-top: 150% !important;
+                /* 3:2 for portrait */
+            }
+
+            .row-3 {
+                padding: 0 !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Dance to APT.</h1>
+
+    <div class="masonry-container">
+        <!-- Row 1: Landscape + Portrait + Landscape -->
+        <div class="masonry-row row-1">
+            <div class="masonry-item landscape" id="item-1-1">
+                <video controls controlsList="nofullscreen nodownload" playsinline>
+                    <source src="begging_catv2_3x2_seed80.mp4" type="video/mp4">
+                </video>
+            </div>
+
+            <div class="masonry-item portrait" id="item-1-2">
+                <video controls controlsList="nofullscreen nodownload" playsinline>
+                    <source src="cat_dancing_3x2_seed8.mp4" type="video/mp4">
+                </video>
+            </div>
+
+            <div class="masonry-item landscape" id="item-1-3">
+                <video controls controlsList="nofullscreen nodownload" playsinline>
+                    <source src="gpt-4o_capybara.mp4" type="video/mp4">
+                </video>
+            </div>
+        </div>
+
+        <!-- Row 2: Landscape + Portrait + Landscape (same as row 1) -->
+        <div class="masonry-row row-2">
+            <div class="masonry-item landscape" id="item-2-1">
+                <video controls controlsList="nofullscreen nodownload" playsinline>
+                    <source src="gpt-4o_hedgehog.mp4" type="video/mp4">
+                </video>
+            </div>
+
+            <div class="masonry-item portrait" id="item-2-2">
+                <video controls controlsList="nofullscreen nodownload" playsinline>
+                    <source src="gpt-4o_meerkat.mp4" type="video/mp4">
+                </video>
+            </div>
+
+            <div class="masonry-item landscape" id="item-2-3">
+                <video controls controlsList="nofullscreen nodownload" playsinline>
+                    <source src="marmot_dance_3x2_seed86.mp4" type="video/mp4">
+                </video>
+            </div>
+        </div>
+
+        <!-- Row 3: All landscape videos -->
+        <div class="masonry-row row-3">
+            <div class="masonry-item landscape" id="item-3-1">
+                <video controls controlsList="nofullscreen nodownload" playsinline>
+                    <source src="marmot_dance_fun_3x2_seed10.mp4" type="video/mp4">
+                </video>
+            </div>
+
+            <div class="masonry-item landscape" id="item-3-2">
+                <video controls controlsList="nofullscreen nodownload" playsinline>
+                    <source src="penguin_3x2_seed80.mp4" type="video/mp4">
+                </video>
+            </div>
+
+            <div class="masonry-item landscape" id="item-3-3">
+                <video controls controlsList="nofullscreen nodownload" playsinline>
+                    <source src="seaotter_3x2_seed55.mp4" type="video/mp4">
+                </video>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Function to set correct aspect ratios
+            function maintainAspectRatios() {
+                const container = document.querySelector('.masonry-container');
+                const containerWidth = container.clientWidth;
+                const gap = 20; // Gap between items
+
+                // Calculate dimensions for each row
+                // Row 1 & 2: Landscape (40%) + Portrait (20%) + Landscape (40%) layout
+                const rows = ['.row-1', '.row-2'];
+
+                rows.forEach(rowSelector => {
+                    const row = document.querySelector(rowSelector);
+                    const items = row.querySelectorAll('.masonry-item');
+
+                    // First landscape (40% of available width)
+                    const item1 = items[0];
+                    const width1 = (containerWidth - (gap * 2)) * 0.4;
+                    const height1 = width1 * (2 / 3); // 3:2 ratio for landscape
+
+                    // Middle portrait (20% of available width)
+                    const item2 = items[1];
+                    const width2 = (containerWidth - (gap * 2)) * 0.2;
+                    const height2 = width2 * (3 / 2); // 2:3 ratio for portrait
+
+                    // Last landscape (40% of available width)
+                    const item3 = items[2];
+                    const width3 = (containerWidth - (gap * 2)) * 0.4;
+                    const height3 = width3 * (2 / 3); // 3:2 ratio for landscape
+
+                    // Apply dimensions
+                    item1.style.width = `${width1}px`;
+                    item1.style.height = `${height1}px`;
+
+                    item2.style.width = `${width2}px`;
+                    item2.style.height = `${height2}px`;
+
+                    item3.style.width = `${width3}px`;
+                    item3.style.height = `${height3}px`;
+
+                    console.log(`${rowSelector} sizes:`,
+                        `Landscape1: ${width1}×${height1}`,
+                        `Portrait: ${width2}×${height2}`,
+                        `Landscape2: ${width3}×${height3}`);
+                });
+
+                // Row 3: Three equal landscape videos
+                const row3 = document.querySelector('.row-3');
+                const row3Items = row3.querySelectorAll('.masonry-item');
+                const width3 = (containerWidth - (gap * 2)) / 3;
+                const height3 = width3 * (2 / 3); // 3:2 ratio for landscape
+
+                row3Items.forEach(item => {
+                    item.style.width = `${width3}px`;
+                    item.style.height = `${height3}px`;
+                });
+
+                console.log('Row 3 (All Landscape) - Item size:', `${width3}×${height3}`);
+            }
+
+            // Set aspect ratios on load and resize
+            window.addEventListener('load', maintainAspectRatios);
+            window.addEventListener('resize', function () {
+                setTimeout(maintainAspectRatios, 200);
+            });
+
+            // Initial call
+            setTimeout(maintainAspectRatios, 10);
+
+            // Setup video click handling
+            const videoItems = document.querySelectorAll('.masonry-item');
+            const allVideos = document.querySelectorAll('video');
+
+            // Function to pause all videos
+            function pauseAllVideos() {
+                allVideos.forEach(v => {
+                    v.pause();
+                    v.parentElement.classList.remove('playing');
+                });
+            }
+
+            // Handle clicks for videos directly
+            videoItems.forEach(item => {
+                const video = item.querySelector('video');
+
+                // Set initial volume to a moderate level
+                video.volume = 0.7;
+
+                // Handle click on video itself
+                video.addEventListener('click', function (e) {
+                    // If we're clicking on the video element but not controls
+                    if (e.target === video) {
+                        e.stopPropagation();
+
+                        // If this video is playing, pause it
+                        if (!video.paused) {
+                            video.pause();
+                            item.classList.remove('playing');
+                        } else {
+                            // Pause all other videos
+                            pauseAllVideos();
+
+                            // Play this video
+                            video.play().then(() => {
+                                item.classList.add('playing');
+                            }).catch(error => {
+                                console.error("Error playing video:", error);
+                            });
+                        }
+                    }
+                });
+
+                // Keep controls visible during hover
+                video.addEventListener('mouseover', function () {
+                    // Make sure controls are visible on hover
+                    this.controls = true;
+                });
+
+                // When video is playing
+                video.addEventListener('play', function () {
+                    const parentItem = this.closest('.masonry-item');
+
+                    // Add playing class to the parent
+                    if (parentItem) {
+                        parentItem.classList.add('playing');
+                    }
+
+                    // Hide controls after a short delay if mouse moves away
+                    setTimeout(() => {
+                        if (!parentItem.matches(':hover')) {
+                            // CSS will hide controls when not hovering
+                        }
+                    }, 2000);
+                });
+
+                // When video ends
+                video.addEventListener('ended', function () {
+                    item.classList.remove('playing');
+                });
+
+                // When video is paused
+                video.addEventListener('pause', function () {
+                    item.classList.remove('playing');
+                });
+
+                // Force show controls during interaction
+                video.addEventListener('mousedown', function () {
+                    this.controls = true;
+                });
+            });
+
+            // Track loading of videos
+            let loadedCount = 0;
+            allVideos.forEach(video => {
+                video.addEventListener('loadedmetadata', function () {
+                    loadedCount++;
+                    if (loadedCount === allVideos.length) {
+                        maintainAspectRatios();
+                    }
+                });
+
+                // If already loaded
+                if (video.readyState >= 1) {
+                    maintainAspectRatios();
+                }
+            });
+
+            // Additional layout pass after a delay
+            setTimeout(maintainAspectRatios, 500);
+        });
+    </script>
+</body>
+
+</html>

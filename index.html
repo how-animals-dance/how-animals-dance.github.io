@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- <meta http-equiv="refresh" content="5; url="> -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- <meta content="Generative Keyframe Interpolation with Forward-Backward Consistency" property="og:title">
+<meta content="Generative Keyframe Interpolation with Forward-Backward Consistency" property="twitter:title">
+<meta property="og:type" content="website">
+<link rel="icon" href="assets/video.svg"/> -->
+    <title>How Animals Dance</title>
+    <!--  <meta name="description" content="keyframe interpolation">
+<meta name="keywords" content="keyframe interpolation, image-to-video diffusion model">
+
+<meta content="Generative Keyframe Interpolation with Forward-Backward Consistency" property="twitter:title" />
+<meta content="Generative Keyframe Interpolation with Forward-Backward Consistency" property="twitter:description" />
+
+
+<meta property="og:image" content="assets/teaser.jpg">
+<meta property="og:type" content="website" />
+<meta property="og:url" content=""/>
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="assets/teaser.jpg" /> -->
+
+    <!-- Google tag (gtag.js) -->
+    <!-- <script async src=""></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+
+gtag('config', 'G-TPWJGFG8CS');
+</script> -->
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <!-- popper used for tooltips -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <!-- bootstrap styling used for carousel -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="./static/css/bulma.min.css">
+    <link rel="stylesheet" href="./static/css/index.css">
+    <link rel="stylesheet" href="./static/css/custom.css">
+    <link rel="stylesheet" href="./static/css/fonts.css">
+
+    <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+
+    <script defer src="./static/js/fontawesome.all.min.js"></script>
+    <script src="./static/js/interactions.js"></script>
+    <meta charset="UTF-8">
+
+    <!-- Added CSS for auto-hiding video controls -->
+    <style>
+        video::-webkit-media-controls {
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        video.show-controls::-webkit-media-controls {
+            opacity: 1;
+        }
+
+        /* For Firefox and other browsers */
+        video {
+            position: relative;
+        }
+
+        video::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+    </style>
+</head>
+
+<body>
+    <script src="static/js/select_frame.js"></script>
+
+    <section class="hero">
+        <div class="hero-body" style="padding: 3rem 1.5rem 0.5rem 1.5rem;">
+            <div class="container is-max-desktop">
+                <div class="columns is-centered">
+                    <div class="column has-text-centered">
+                        <h1 class="title is-1 publication-title" style="font-size: 44px;">How Animals Dance <br> (When You're Not Looking)</h1>
+                        <div class="is-size-5 publication-authors">
+                            <span class="author-block">
+                                <a href="https://jeanne-wang.github.io/" target="_blank">Xiaojuan
+                                    Wang</a><sup>1</sup>&nbsp;
+                            </span>
+                            <span class="author-block">
+                                <a href="https://holynski.org" target="_blank">Aleksander Holynski</a><sup>2</sup>&nbsp;
+                            </span>
+                            <span class="author-block">
+                                <a href="https://homes.cs.washington.edu/~curless/" target="_blank">Brian
+                                    Curless</a><sup>1</sup>&nbsp;
+                            </span>
+                             <span class="author-block">
+                                <a href="https://www.irakemelmacher.com/" target="_blank">Ira
+                                    Kemelmacher</a><sup>1</sup>&nbsp;
+                            </span>
+                            <span class="author-block">
+                                <a href="https://www.smseitz.com/" target="_blank">Steve Seitz</a><sup>1</sup>
+                            </span>
+                        </div>
+                        <div class="is-size-5 publication-authors">
+                            <span class="author-block"><sup>1</sup>University of Washington</span>&nbsp;
+                            <span class="author-block"><sup>2</sup>UC Berkeley</span>
+                        </div>
+
+                        <div class="column has-text-centered">
+                  <div class="publication-links">
+                      <span class="link-block">
+                          <a href="https://arxiv.org/abs/2408.15239" target="_blank" class="external-link button is-normal is-rounded is-dark">
+                              <span class="icon">
+                                  <i class="ai ai-arxiv"></i>
+                              </span>
+                              <span>arXiv</span>
+                          </a>
+                      </span>
+                      <span class="link-block">
+                          <a href="#results1" class="external-link button is-normal is-rounded is-dark">
+                              <span class="icon">
+                                  <img src="assets/hand.svg" />
+                              </span>
+                              <span>Results</span>
+                          </a>
+                      </span>
+                  </div>
+              </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+     <section class="hero teaser">
+        <div class="hero-body is-centered">
+        <div class="columns is-centered">
+        <div class="column is-centered is-full is-three-quarters-widescreen">
+<!-- <video id="teaser" autoplay muted playsinline loop style="display: block; margin: auto;">
+<source src="assets/teaser.mp4" type="video/mp4">
+</video> -->
+        <div class="teaser">
+                <img src="assets/teaser.png"class="responsive-img">
+        </div>
+        <h2 class="caption is-size-5 subtitle has-text-centered">
+         <b>TL;DR: </b>Starting from a small set of generated keyframes, \eg, a marmot in various poses, our method generates an animal dance video that follows a specified choreography pattern, extracted from a reference dance video.
+        </h2>
+        </div>
+        </div>
+        </div>
+</section>
+<hr>
+
+    <!-- <section class="section">
+<div class="container is-max-desktop">
+  <h2 class="title is-2 is-centered has-text-centered">Abstract</h2>
+      <div class="">
+             We present a method for generating video sequences with coherent motion between a pair of input key frames. We adapt a pretrained large-scale image-to-video diffusion model (originally trained to generate videos moving forward in time from a single input image) for key frame interpolation, i.e., to produce a video in between two input frames. We accomplish this adaptation through a lightweight fine-tuning technique that produces a version of the model that instead predicts videos moving <em>backwards</em> in time from a single input image. This model (along with the original forward-moving model) is subsequently used in a dual-directional diffusion sampling process that combines the overlapping model estimates starting from each of the two keyframes. Our experiments shows that our method outperforms both existing diffusion-based methods and traditional frame interpolation techniques.
+      </div>
+</div>
+</section>
+<hr> -->
+
+    <section class="section">
+        <div class="container">
+            <h2 class="title custom-title is-centered has-text-centered">Doing the same dance</h2>
+            <!-- example1 -->
+            <div class="row1">
+                <div class="media-large">
+                    <video controls>
+                        <source src="assets/videos/dance_the_same/demo.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            </div>
+        </div>
+    </section>
+    <hr>
+    <section class="section">
+        <div class="container">
+            <h2 class="title custom-title is-centered has-text-centered">Everyone has a unique dance</h2>
+
+            <!-- example1 -->
+            <div class="row1">
+                <span class="link-block" style="display: flex; justify-content: center; width: 100%;">
+                    <a href="assets/videos/everyone_unique_dance/APT/index.html" target="_blank"
+                        class="external-link button is-normal is-rounded is-dark">
+                        <span class="icon"> <img src="assets/hand.svg" /></span>
+                        <span>More examples</span>
+                    </a>
+                </span>
+            </div>
+
+
+            <div class="row1">
+                <div class="media-large">
+                    <video controls>
+                        <source src="assets/videos/everyone_unique_dance/APT/demo.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            </div>
+
+            <!--example2 -->
+            <div class="row1">
+                <span class="link-block" style="display: flex; justify-content: center; width: 100%;">
+                    <a href="assets/videos/everyone_unique_dance/CannotStopFeeling/index.html" target="_blank"
+                        class="external-link button is-normal is-rounded is-dark">
+                        <span class="icon"> <img src="assets/hand.svg" /></span>
+                        <span>More examples</span>
+                    </a>
+                </span>
+            </div>
+            <div class="row1">
+                <div class="media-large">
+                    <video controls>
+                        <source src="assets/videos/everyone_unique_dance/CannotStopFeeling/demo.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            </div>
+
+            <!--example3 -->
+            <div class="row1">
+                <span class="link-block" style="display: flex; justify-content: center; width: 100%;">
+                    <a href="assets/videos/everyone_unique_dance/Uptownfunk/index.html" target="_blank"
+                        class="external-link button is-normal is-rounded is-dark">
+                        <span class="icon"> <img src="assets/hand.svg" /></span>
+                        <span>More examples</span>
+                    </a>
+                </span>
+            </div>
+            <div class="row1">
+                <div class="media-large">
+                    <video controls>
+                        <source src="assets/videos/everyone_unique_dance/Uptownfunk/demo.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+    <hr>
+
+    <!-- Added JavaScript for auto-hiding video controls -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const videos = document.querySelectorAll('video');
+            let hideTimeout;
+
+            videos.forEach(video => {
+                // Remove the 'controls' attribute and add it via JavaScript
+                const hasControls = video.hasAttribute('controls');
+                if (hasControls) {
+                    video.removeAttribute('controls');
+                    video.controls = true;
+                }
+
+                // Set default volume to 0.3 
+                video.volume = 0.3;
+
+                // Initially hide all controls
+                video.classList.remove('show-controls');
+
+                // Show controls only on the specific video being hovered
+                video.addEventListener('mouseenter', function () {
+                    // Hide controls on all other videos
+                    videos.forEach(v => {
+                        if (v !== video) {
+                            v.classList.remove('show-controls');
+                        }
+                    });
+
+                    // Show controls on this video
+                    video.classList.add('show-controls');
+
+                    // Clear any existing timeout for this video
+                    clearTimeout(hideTimeout);
+                });
+
+                // Hide controls when mouse leaves the video
+                video.addEventListener('mouseleave', function () {
+                    hideControlsDelayed(video);
+                });
+
+                // Keep controls visible during interaction, except for play which hides immediately
+                video.addEventListener('play', function () {
+                    // Hide controls immediately after play is clicked
+                    video.classList.remove('show-controls');
+                });
+                video.addEventListener('pause', function () { showControls(video); });
+                video.addEventListener('volumechange', function () { showControls(video); });
+            });
+
+            // Hide all controls initially
+            hideAllControls();
+
+            function showControls(video) {
+                // Show controls on the specific video
+                video.classList.add('show-controls');
+
+                // Clear any existing timeout
+                clearTimeout(hideTimeout);
+
+                // Set a new timeout to hide controls after 2 seconds
+                hideTimeout = setTimeout(function () {
+                    video.classList.remove('show-controls');
+                }, 2000);
+            }
+
+            function hideControlsDelayed(video) {
+                clearTimeout(hideTimeout);
+                hideTimeout = setTimeout(function () {
+                    video.classList.remove('show-controls');
+                }, 500);
+            }
+
+            function hideAllControls() {
+                videos.forEach(video => {
+                    video.classList.remove('show-controls');
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>
