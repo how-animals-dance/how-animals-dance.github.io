@@ -46,32 +46,8 @@
     <script src="./static/js/interactions.js"></script>
     <meta charset="UTF-8">
 
-    <!-- Added CSS for auto-hiding video controls -->
+    <!-- Removed CSS for auto-hiding video controls -->
     <style>
-        video::-webkit-media-controls {
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        video.show-controls::-webkit-media-controls {
-            opacity: 1;
-        }
-
-        /* For Firefox and other browsers */
-        video {
-            position: relative;
-        }
-
-        video::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-        }
-
         .hero,
         .hero-body,
         .columns,
@@ -80,10 +56,47 @@
             margin-bottom: 0 !important;
             padding-bottom: 0 !important;
         }
-
         #teaser-caption {
             margin-top: 0 !important;
             padding-top: 0 !important;
+        }
+        @media (max-width: 600px) {
+            .section {
+                padding-left: 0 !important;
+                padding-right: 0 !important;
+            }
+            .row1 {
+                display: flex !important;
+                flex-direction: column !important;
+                width: 100% !important;
+                align-items: stretch !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            .media1, .media2 {
+                width: 100% !important;
+                max-width: 100% !important;
+                margin-bottom: 1em !important;
+                padding: 0 !important;
+            }
+            .media1 video, .media2 video {
+                width: 100% !important;
+                max-width: 100% !important;
+                height: auto !important;
+                display: block;
+            }
+            .video-caption {
+                font-size: 1em !important;
+            }
+            .link-block {
+                flex-direction: column !important;
+                align-items: center !important;
+                gap: 0.5em !important;
+            }
+            .audio-reminder {
+                margin-top: 0.5em !important;
+                justify-content: center !important;
+            }
         }
     </style>
 </head>
@@ -124,7 +137,7 @@
 
                         <div class="column has-text-centered">
                             <div class="publication-links">
-                                <span class="link-block" style="padding-top: 10px; padding-bottom: 10px; position:relative; display:block;">
+                                <span class="link-block" style="padding-top: 10px; padding-bottom: 10px; display: flex; align-items: center; gap: 1em; flex-wrap: wrap; justify-content: center;">
                                     <a href="" class="external-link button is-normal is-rounded is-dark"
                                         style="width: 80px; font-size: 15px">
                                         <span class="icon">
@@ -136,7 +149,7 @@
                                         style="width: 120px; font-size: 15px" target="_blank" rel="noopener noreferrer">
                                         <span>Gallery</span>
                                     </a>
-                                    <span style="position:absolute; right:0; top:50%; transform:translateY(-50%); color:#3e3f3f; font-size:1.1em; cursor:pointer; display:flex; align-items:center; gap:0.3em;" title="Turn on audio!">
+                                    <span class="audio-reminder" style="color:#3e3f3f; font-size:1.1em; display:flex; align-items:center; gap:0.3em;" title="Turn on audio!">
                                         <i class="fas fa-volume-up"></i>
                                         <span style="font-weight:500; color:#3e3f3f; font-size:1em;">Please turn on audio!</span>
                                     </span>
@@ -196,14 +209,14 @@
             <div class="row1" style="width:100%; margin:0;">
                 <div class="media1">
                     <video controls>
-                        <source src="assets/videos/dance_the_same/demo.mp4" type="video/mp4">
+                        <source src="assets/videos/dance_the_same/demo_1.mp4" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>
                     <div class="video-caption" style="margin-top:0.5em;font-size:1rem;text-align:center;">Bumblebee 🎵</div>
                 </div>
                 <div class="media2">
                     <video controls>
-                        <source src="assets/videos/dance_the_same/demo2.mp4" type="video/mp4">
+                        <source src="assets/videos/dance_the_same/demo_2.mp4" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>
                     <div class="video-caption" style="margin-top:0.5em;font-size:1rem;text-align:center;">Rasputin 🎵</div>
@@ -263,87 +276,6 @@
     </section>
     
  
-
-    <!-- Added JavaScript for auto-hiding video controls -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const videos = document.querySelectorAll('video');
-            let hideTimeout;
-
-            videos.forEach(video => {
-                // Remove the 'controls' attribute and add it via JavaScript
-                const hasControls = video.hasAttribute('controls');
-                if (hasControls) {
-                    video.removeAttribute('controls');
-                    video.controls = true;
-                }
-
-                // Set default volume to 0.3 
-                video.volume = 0.3;
-
-                // Initially hide all controls
-                video.classList.remove('show-controls');
-
-                // Show controls only on the specific video being hovered
-                video.addEventListener('mouseenter', function () {
-                    // Hide controls on all other videos
-                    videos.forEach(v => {
-                        if (v !== video) {
-                            v.classList.remove('show-controls');
-                        }
-                    });
-
-                    // Show controls on this video
-                    video.classList.add('show-controls');
-
-                    // Clear any existing timeout for this video
-                    clearTimeout(hideTimeout);
-                });
-
-                // Hide controls when mouse leaves the video
-                video.addEventListener('mouseleave', function () {
-                    hideControlsDelayed(video);
-                });
-
-                // Keep controls visible during interaction, except for play which hides immediately
-                video.addEventListener('play', function () {
-                    // Hide controls immediately after play is clicked
-                    video.classList.remove('show-controls');
-                });
-                video.addEventListener('pause', function () { showControls(video); });
-                video.addEventListener('volumechange', function () { showControls(video); });
-            });
-
-            // Hide all controls initially
-            hideAllControls();
-
-            function showControls(video) {
-                // Show controls on the specific video
-                video.classList.add('show-controls');
-
-                // Clear any existing timeout
-                clearTimeout(hideTimeout);
-
-                // Set a new timeout to hide controls after 2 seconds
-                hideTimeout = setTimeout(function () {
-                    video.classList.remove('show-controls');
-                }, 2000);
-            }
-
-            function hideControlsDelayed(video) {
-                clearTimeout(hideTimeout);
-                hideTimeout = setTimeout(function () {
-                    video.classList.remove('show-controls');
-                }, 500);
-            }
-
-            function hideAllControls() {
-                videos.forEach(video => {
-                    video.classList.remove('show-controls');
-                });
-            }
-        });
-    </script>
 
     <!-- Video Modal -->
     <div id="videoModal" class="modal" style="display:none;">
