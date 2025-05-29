@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gallery</title>
     <link rel="stylesheet" href="static/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
         .gallery-dropdown { margin: 2rem auto 1rem auto; max-width: 400px; text-align:center; }
         .dropdown.is-active .dropdown-menu { display: block; }
@@ -40,13 +41,14 @@
     </style>
 </head>
 <body>
-    <div class="gallery-dropdown">
+    <div class="gallery-dropdown" style="display:flex; align-items:center; justify-content:center; gap:1em;">
+        <span style="font-size:1.1em; color:#444;">Select a song:</span>
         <div class="dropdown" id="musicDropdown">
             <div class="dropdown-trigger">
                 <button class="button is-link is-medium" aria-haspopup="true" aria-controls="dropdown-menu" id="dropdownButton">
                     <span id="dropdownLabel">APT. 🎵</span>
-                    <span class="icon is-small" style="margin-left:0.5em; font-size:1.2em; color:#3273dc;">
-                        <i class="fas fa-chevron-down" aria-hidden="true"></i>
+                    <span class="icon is-small" style="margin-left:0.5em; font-size:1.2em;">
+                        <i class="fas fa-chevron-down" aria-hidden="true" style="color:#838383;"></i>
                     </span>
                 </button>
             </div>
@@ -59,7 +61,7 @@
             </div>
         </div>
     </div>
-    <!-- <h1>Dance to <em>APT.</em></h1> -->
+    <h1 class="title is-3">Dance to <em>APT.</em></h1>
     <div class="masonry-container">
         <!-- Row 1: Landscape + Portrait + Landscape -->
         <div class="masonry-row row-1">
@@ -116,7 +118,6 @@
             </div>
         </div>
     </div>
-    <script src="https://kit.fontawesome.com/7b2b2a0c57.js" crossorigin="anonymous"></script>
     <script>
         // Dropdown logic
         const dropdown = document.getElementById('musicDropdown');
